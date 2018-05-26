@@ -11,7 +11,7 @@ import cpp.cs.cs420.IsolationGame.model.StaticVals;
  * Created by mayalake on 5/17/18.
  */
 public class UserUI {
-	BoardController bc;// = new BoardController(true);
+	BoardController bc = new BoardController(true);
 	
     Scanner sc = new Scanner(System.in);
     
@@ -34,7 +34,9 @@ public class UserUI {
     public void playerMove(){
     	System.out.println("Enter a coordinate to move to: x, y");
     	int x = 0, y = 0;
-    	String playerMove = sc.nextLine().trim();
+    	String playerMove = sc.nextLine().replaceAll("\\s","");
+    	
+    	//System.out.println(playerMove);
     	
     	try {	//error check
 	    	x = Integer.parseInt(playerMove.split(",")[0]);

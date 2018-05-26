@@ -14,10 +14,6 @@ public class Board {
     private ArrayList<int[]> userMoves = new ArrayList<int[]>();
     private ArrayList<int[]> computerMoves = new ArrayList<int[]>();
     
-    	//store row[all cols using that row], can delete if unnecessary
-//    private HashMap<Integer, ArrayList<Integer>> userMoves = new HashMap<Integer, ArrayList<Integer>>();
-//    private HashMap<Integer, ArrayList<Integer>> computerMoves = new HashMap<Integer, ArrayList<Integer>>();
-    
     private int playerX, playerY, computerX, computerY;
 
     public Board(boolean userTurn){
@@ -28,9 +24,7 @@ public class Board {
         	}
         }
         char firstPlayer, secondPlayer;
-        //set initial board state
-        //char firstPlayer = (userTurn? 'O' : 'X');	//change to if statements to store playerx,y/ compx,y?
-        // char secondPlayer = (!userTurn? 'O' : 'X');
+        
         if (userTurn){		//set player positions
         	firstPlayer = 'O';
         	secondPlayer = 'X';
@@ -58,12 +52,6 @@ public class Board {
     			board[playerX][playerY] = '#';
     			
     			userMoves.add(new int[]{row, col});
-    			
-/*    			if (userMoves.containsKey(row)){ //this uses hashmap, temp code can delete if arraylist<int[]> works
-    				userMoves.get(row).add(col);
-    			} else {
-    				userMoves.put(row, new ArrayList<Integer>(col));
-    			}*/
     			
     			playerX = row; 
     			playerY = col;
