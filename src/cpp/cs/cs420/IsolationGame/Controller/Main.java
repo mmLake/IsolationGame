@@ -11,6 +11,11 @@ public class Main {
     	Board board = new Board(true);
     	ui.printBoard(board);
     	ui.printMoves(board);
+    	board.movePlayer(1, 1, true);
+    	ui.printBoard(board);
+    	ui.printMoves(board);
+    	
+ //   	System.out.println(board.getUserMoves().get(0)[0] + ", " + board.getUserMoves().get(0)[1]);
 //    	System.out.println(board.checkMoveValidity(0, 0, 7, 0));
     }
 }

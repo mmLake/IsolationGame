@@ -8,8 +8,16 @@ import java.util.HashMap;
  */
 public class Board {
     private Character[][] board;
-    private ArrayList<String> userMoves = new ArrayList<String>();
-    private ArrayList<String> computerMoves = new ArrayList<String>();
+    //data structure, needs to use contain() for quick traverse, 
+    	//need to store both move coordinates in order, (letter# optional), literally just for printing
+    
+    private ArrayList<int[]> userMoves = new ArrayList<int[]>();
+    private ArrayList<int[]> computerMoves = new ArrayList<int[]>();
+    
+    	//store row[all cols using that row], can delete if unnecessary
+//    private HashMap<Integer, ArrayList<Integer>> userMoves = new HashMap<Integer, ArrayList<Integer>>();
+//    private HashMap<Integer, ArrayList<Integer>> computerMoves = new HashMap<Integer, ArrayList<Integer>>();
+    
     private int playerX, playerY, computerX, computerY;
 
     public Board(boolean userTurn){
@@ -19,26 +27,52 @@ public class Board {
         		board[i][j] = '-';
         	}
         }
+        char firstPlayer, secondPlayer;
         //set initial board state
-        char firstPlayer = (userTurn? 'O' : 'X');
-        char secondPlayer = (!userTurn? 'O' : 'X');
-
+        //char firstPlayer = (userTurn? 'O' : 'X');	//change to if statements to store playerx,y/ compx,y?
+        // char secondPlayer = (!userTurn? 'O' : 'X');
+        if (userTurn){		//set player positions
+        	firstPlayer = 'O';
+        	secondPlayer = 'X';
+        	playerX = 0;
+        	playerY = 0;
+        	computerX = StaticVals.BOARD_SIZE-1;
+        	computerY = StaticVals.BOARD_SIZE-1;
+        } else{
+        	firstPlayer = 'X';
+        	secondPlayer = 'O';
+        	playerX = StaticVals.BOARD_SIZE-1;
+        	playerY = StaticVals.BOARD_SIZE-1;
+        	computerX = 0;
+        	computerY = 0;
+        }
         board[0][0] = firstPlayer;
         board[StaticVals.BOARD_SIZE-1][StaticVals.BOARD_SIZE-1] = secondPlayer;
     }
 
+    //Moves the player and checks for move validity, # represents used, O for user current position
     public boolean movePlayer(int row, int col, boolean isUser){
     	if (isUser){
     		if (checkMoveValidity(playerX, playerY, row, col)){
     			board[row][col] = 'O';
     			board[playerX][playerY] = '#';
-    			//userMoves.add()
-    			// to do, user arraylist of string or of integer[] 
+    			
+    			userMoves.add(new int[]{row, col});
+    			
+/*    			if (userMoves.containsKey(row)){ //this uses hashmap, temp code can delete if arraylist<int[]> works
+    				userMoves.get(row).add(col);
+    			} else {
+    				userMoves.put(row, new ArrayList<Integer>(col));
+    			}*/
+    			
     			playerX = row; 
     			playerY = col;
     		} else {
     			return false;
     		}
+    	}
+    	else {
+    		//move ai on board
     	}
     	return true;
     }
@@ -49,6 +83,7 @@ public class Board {
     	return 0;
     	//return value for minimizer/maximizer to use
     }
+    
     // check if inputed moves are valid, checking for board position, used tiles, computer location
     public boolean checkMoveValidity(int oldX, int oldY, int x, int y){
     	if (x < 0 || x > 7 || y < 0 || y > 7){
@@ -102,10 +137,16 @@ public class Board {
     public void setBoardPosition(int x, int y, char z){
     	board[x][y] = z;
     }
-    public ArrayList<String> getUserMoves(){
+    public ArrayList<int[]> getUserMoves(){
     	return userMoves;
     }
-    public ArrayList<String> getComputerMoves(){
+    public ArrayList<int[]> getComputerMoves(){
     	return computerMoves;
     }
+/*    public HashMap<Integer, ArrayList<Integer>> getUserMoves(){
+    	return userMoves;
+    }
+    public HashMap<Integer, ArrayList<Integer>> getComputerMoves(){
+    	return computerMoves;
+    }*/
 }
