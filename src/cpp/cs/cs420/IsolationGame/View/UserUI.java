@@ -34,23 +34,22 @@ public class UserUI {
     public void playerMove(){
     	System.out.println("Enter a coordinate to move to: x, y");
     	int x = 0, y = 0;
-    	String playerMove = sc.nextLine().replaceAll("\\s","");
+    	String playerMove = sc.nextLine().replaceAll("\\s",""); //can just split(", ") instead?
     	
     	//System.out.println(playerMove);
     	
     	try {	//error check
 	    	x = Integer.parseInt(playerMove.split(",")[0]);
 	    	y = Integer.parseInt(playerMove.split(",")[1]);
+	    	if (!bc.movePlayer(x, y, true)){	// if movement is not possible
+	    		//check valid (board boundaries, used slots, other player coordinates in boardcontroller-> board
+	    		playerMove();
+	    	} else {	// on successful move, print new board?
+	    		printBoard(bc.getBoard());
+	    	}
     	} catch (NumberFormatException e){
-    		System.out.println(e.getMessage());
-    		playerMove();
-    	}
-    	
-    	if (!bc.movePlayer(x, y, true)){	// if movement is not possible
-    		//check valid (board boundaries, used slots, other player coordinates in boardcontroller-> board
-    		playerMove();
-    	} else {	// on successful move, print new board?
-    		printBoard(bc.getBoard());
+    		System.out.println("Error! " + e.getMessage());
+    		playerMove(); 
     	}
     }
     // print board using the board object
