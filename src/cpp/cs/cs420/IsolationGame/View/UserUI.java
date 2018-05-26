@@ -11,23 +11,33 @@ import cpp.cs.cs420.IsolationGame.model.StaticVals;
  * Created by mayalake on 5/17/18.
  */
 public class UserUI {
-	BoardController bc = new BoardController(true);
-	
+	BoardController bc;// = new BoardController(true);
     Scanner sc = new Scanner(System.in);
     
+    public void startGame(){
+    	welcomeMessage();
+    	bc = new BoardController(enterFirstPlayer());
+    	while (true){	//change to win condition
+    		playerMove();
+    		//computer move
+    	}
+    	
+    }
 
     public void welcomeMessage(){
         System.out.printf("Welcome to the Isolation Game. To win, be the last one to make a move\n");
     }
 
-    public Character enterFirstPlayer(){
+    public boolean enterFirstPlayer(){
         char firstPlayer;
         do{
             System.out.printf("Enter 'O' to play first or enter 'X' for computer to play first\n");
             firstPlayer = sc.nextLine().toUpperCase().charAt(0);
-        }while((firstPlayer != 'X') &&  (firstPlayer != '0'));
-
-        return firstPlayer;
+        }while((firstPlayer != 'X') &&  (firstPlayer != 'O'));
+        
+        if (firstPlayer == 'O')
+        	return true;
+        return false;
     }
     
     // Player enters a coordinate system input to move their piece

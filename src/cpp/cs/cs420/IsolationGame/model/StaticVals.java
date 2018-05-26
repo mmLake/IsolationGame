@@ -8,4 +8,5 @@ public class StaticVals {
     public static final String BOARD_COLUMNS = "  1 2 3 4 5 6 7 8\n";
     public static final char[] ALPHABET = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
     public static final String VERSUS = "Computer vs. Opponent\n";
+    public static final String COMPUTER_MOVE = "Computer’s move is: ";
 }

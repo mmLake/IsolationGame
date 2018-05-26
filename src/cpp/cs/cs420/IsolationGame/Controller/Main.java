@@ -8,10 +8,11 @@ public class Main {
 
     public static void main(String[] args) {
     	UserUI ui = new UserUI();		//need to start testing in UI class, as this board isn't modified, but UI's is
-    	Board board = new Board(true);	
-    	ui.printBoard(board);
-    	ui.printMoves(board);
-    	ui.playerMove();
+    	ui.startGame();
+//    	Board board = new Board(true);	
+//    	ui.printBoard(board);
+//    	ui.printMoves(board);
+//    	ui.playerMove();
     	//board.movePlayer(1, 1, true);
 //    	ui.printBoard(board);
  //   	ui.printMoves(board);
