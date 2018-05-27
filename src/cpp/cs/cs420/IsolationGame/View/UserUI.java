@@ -1,24 +1,37 @@
 package cpp.cs.cs420.IsolationGame.View;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 import cpp.cs.cs420.IsolationGame.Controller.BoardController;
 import cpp.cs.cs420.IsolationGame.model.Board;
 import cpp.cs.cs420.IsolationGame.model.StaticVals;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 
 /**
  * Created by mayalake on 5/17/18.
  */
 public class UserUI {
-	BoardController bc;// = new BoardController(true);
     Scanner sc = new Scanner(System.in);
     
     public void startGame(){
     	welcomeMessage();
-    	bc = new BoardController(enterFirstPlayer());
-    	while (true){	//change to win condition
-    		playerMove();
+
+		boolean userTurn = enterFirstPlayer();
+		Board root = new Board(userTurn);
+
+		printBoard(root);
+
+		while (true){	//change to win condition
+    		//user move
+			int[] newMove = enterPlayerMove(root);
+			Board newBoard = BoardController.movePlayer(root, newMove[0], newMove[1]);
+
+			printBoard(newBoard);
+
+			root = newBoard;
+
     		//computer move
     	}
     	
@@ -39,28 +52,59 @@ public class UserUI {
         	return true;
         return false;
     }
+
+    public int[] enterPlayerMove(Board root) {
+		boolean askForMove = true;
+		int[] newMove = new int[2];
+
+		while (askForMove){
+			try {
+				System.out.println("Enter a coordinate to move to: xy (ex: A1)");
+				String playerMove = sc.nextLine().replaceAll("\\s","");
+
+				int x = StaticVals.ALPHABET.indexOf(Character.toUpperCase(playerMove.charAt(0)));
+				int y = Integer.parseInt(playerMove.substring(1))-1;
+				newMove[0] =x;
+				newMove[1] =y;
+
+				if (isValidPlayerMove(root, x, y)){
+					askForMove = false;
+				}
+
+
+			} catch (Exception e) {
+				System.out.println("error");
+			}
+		}
+
+		return newMove;
+	}
+
     
     // Player enters a coordinate system input to move their piece
-    public void playerMove(){
-    	System.out.println("Enter a coordinate to move to: x, y");
-    	int x = 0, y = 0;
-    	String playerMove = sc.nextLine().replaceAll("\\s",""); //can just split(", ") instead?
-    	
-    	//System.out.println(playerMove);
-    	
-    	try {	//error check
-	    	x = Integer.parseInt(playerMove.split(",")[0]);
-	    	y = Integer.parseInt(playerMove.split(",")[1]);
-	    	if (!bc.movePlayer(x, y, true)){	// if movement is not possible
-	    		//check valid (board boundaries, used slots, other player coordinates in boardcontroller-> board
-	    		playerMove();
-	    	} else {	// on successful move, print new board?
-	    		printBoard(bc.getBoard());
-	    	}
-    	} catch (NumberFormatException e){
-    		System.out.println("Error! " + e.getMessage());
-    		playerMove(); 
-    	}
+    public boolean isValidPlayerMove(Board currentBoard, int x, int y){
+
+		//if move goes off of the board
+		if (x < 0 || x > 7 || y < 0 || y > 7){
+			return false;
+		}
+
+		//if move is not a legitimate queen move
+		double numerator = (double)currentBoard.getPlayerY()- (double)y;
+		double denominator = (double)currentBoard.getPlayerX() - (double)x;
+		double slope = (numerator)/(denominator);
+
+		if (!(slope == 0.0) && !Double.isInfinite(slope) && !(slope == 1.0) && !(slope == -1.0)){
+			return false;
+		}
+
+		//if has a blocker in between the old move and new move
+		if (BoardController.isValidMove(currentBoard, x,y, currentBoard.getPlayerX(), currentBoard.getPlayerY())){
+			BoardController.movePlayer(currentBoard, x, y);
+			return true;
+		}
+
+		return false;
     }
     // print board using the board object
     public void printBoard(Board board){
@@ -69,7 +113,7 @@ public class UserUI {
     	for (int i = 0; i < StaticVals.BOARD_SIZE; ++i){
     		for (int j = -1; j < StaticVals.BOARD_SIZE; ++j){
     			if (j == -1){
-    				sb.append(StaticVals.ALPHABET[i] + " ");
+    				sb.append(StaticVals.ALPHABET.charAt(i) + " ");
     			} else{
     				sb.append(board.getBoard()[i][j] + " ");
     			}
@@ -89,13 +133,13 @@ public class UserUI {
     		sb.append((i+1) + ".\t");	//print turn count
     		
     		if (board.getComputerMoves().size() >= i && board.getComputerMoves().size() > 0){	//check for empty slot, prevent null pointer
-    			sb.append(convertNumToChar(board.getComputerMoves().get(i)[0])); 
+    			sb.append(StaticVals.ALPHABET.charAt(i));
     			sb.append(board.getComputerMoves().get(i)[1] + "\t ");
     		} else {
     			sb.append("\t");
     		}
     		if (board.getUserMoves().size() >= i  && board.getUserMoves().size() > 0){
-    			sb.append(convertNumToChar(board.getUserMoves().get(i)[0])); 
+    			sb.append(StaticVals.ALPHABET.charAt(i));
     			sb.append(board.getUserMoves().get(i)[1] + "\t ");
     		} else {
     			sb.append("\t");
@@ -103,20 +147,5 @@ public class UserUI {
     	}
     	System.out.println(sb.toString());
     }
-    //convert rows of the arraylist<int[]> data structure in board, which stores the size 2 array, where the 
-    //first represents the row, second the col
-    public char convertNumToChar(int row){
-    	System.out.println("row =" + row);
-    	switch (row){	//add breaks?
-	    	case 0 : return 'A';
-	    	case 1 : return 'B';
-	    	case 2 : return 'C';
-	    	case 3 : return 'D';
-	    	case 4 : return 'E';
-	    	case 5 : return 'F';
-	    	case 6 : return 'G';
-	    	case 7 : return 'H';
-    	}
-    	return 'z';
-    }
+
 }
