@@ -1,17 +1,12 @@
 package cpp.cs.cs420.IsolationGame.View;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 import cpp.cs.cs420.IsolationGame.Controller.BoardController;
 import cpp.cs.cs420.IsolationGame.model.Board;
 import cpp.cs.cs420.IsolationGame.model.StaticVals;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 
-/**
- * Created by mayalake on 5/17/18.
- */
 public class UserUI {
     Scanner sc = new Scanner(System.in);
     
@@ -24,10 +19,11 @@ public class UserUI {
 		printBoard(root);
 
 		while (true){	//change to win condition
-    		//user move
 			int[] newMove = enterPlayerMove(root);
 			Board newBoard = BoardController.movePlayer(root, newMove[0], newMove[1]);
-
+			System.out.println("value" + newBoard.getValue(newMove[0], newMove[1]));
+			
+			System.out.println();
 			printBoard(newBoard);
 
 			root = newBoard;
@@ -100,7 +96,7 @@ public class UserUI {
 
 		//if has a blocker in between the old move and new move
 		if (BoardController.isValidMove(currentBoard, x,y, currentBoard.getPlayerX(), currentBoard.getPlayerY())){
-			BoardController.movePlayer(currentBoard, x, y);
+//			BoardController.movePlayer(currentBoard, x, y);
 			return true;
 		}
 
