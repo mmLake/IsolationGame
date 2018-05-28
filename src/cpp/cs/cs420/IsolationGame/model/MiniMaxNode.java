@@ -1,12 +1,16 @@
 package cpp.cs.cs420.IsolationGame.model;
 
+import java.util.ArrayList;
+
 /**
  * Created by mayalake on 5/27/18.
  */
 public class MiniMaxNode {
     private int alpha;
     private int beta;
-    private int parentIdx;
+    private MiniMaxNode parent;
+    private ArrayList<MiniMaxNode> children;
+
     private boolean isMaxNode;
 
     private Board board;
@@ -38,6 +42,10 @@ public class MiniMaxNode {
 
     public boolean isMaxNode() {
         return isMaxNode;
+    }
+
+    public void setParent(MiniMaxNode parentIdx) {
+        this.parent = parentIdx;
     }
 
 }
