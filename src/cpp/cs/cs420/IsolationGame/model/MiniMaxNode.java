@@ -18,6 +18,8 @@ public class MiniMaxNode {
     public MiniMaxNode(Board board, boolean isMaxNode){
         this.board = board;
         this.isMaxNode = isMaxNode;
+        
+        children = new ArrayList<MiniMaxNode>();
     }
 
     public Board getBoard(){
@@ -47,5 +49,10 @@ public class MiniMaxNode {
     public void setParent(MiniMaxNode parentIdx) {
         this.parent = parentIdx;
     }
-
+    public void addChild(MiniMaxNode child){
+    	children.add(child);
+    }
+    public ArrayList<MiniMaxNode> getChildren(){
+    	return children;
+    }
 }

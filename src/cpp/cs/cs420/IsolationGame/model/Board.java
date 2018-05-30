@@ -14,11 +14,11 @@ public class Board {
     private ArrayList<int[]> userMoves = new ArrayList<int[]>();
     private ArrayList<int[]> computerMoves = new ArrayList<int[]>();
 
-    public Board(Board prevBoard){
+    public Board(Board prevBoard, boolean userTurn){
         this.board = prevBoard.board;
 
-      //  this.userTurn = !prevBoard.userTurn;
-        this.userTurn = true;
+//        this.userTurn = !prevBoard.userTurn;
+        this.userTurn = userTurn;
         this.userMoves = prevBoard.userMoves;
         this.computerMoves = prevBoard.computerMoves;
         this.playerX = prevBoard.playerX;
@@ -64,7 +64,7 @@ public class Board {
     //if minimizer has upper hand, then negative value
     // returns # of available moves in the current board
     public int getValue(int posX, int posY){
-    	System.out.println(posX + ", " + posY + ", " + board[posX][posY]); 
+//    	System.out.println(posX + ", " + posY + ", " + board[posX][posY]); 
     	int availableMoves = 0;
     	boolean top = true, topRight = true, right = true, botRight = true, 
     			bot = true, botLeft = true, left = true, topLeft = true;
@@ -117,18 +117,16 @@ public class Board {
     //helper method, pass in available moves for a certain board position
     private boolean checkPosition(int x, int y, boolean keepChecking){
     	if (x < StaticVals.BOARD_SIZE && y < StaticVals.BOARD_SIZE && x >= 0 && y >= 0 && keepChecking && board[x][y] == '-'){
-    		System.out.println(x + ", " + y);
+//    		System.out.println(x + ", " + y);
     		return true;
     	}
     	return false;
     }
 
     public Character[][] getBoard(){
-
         return board;
     }
     public void setBoardPosition(int x, int y, char z){
-    	
         board[x][y] = z;
     }
     public ArrayList<int[]> getUserMoves(){

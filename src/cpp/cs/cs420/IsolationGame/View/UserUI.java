@@ -1,36 +1,56 @@
 package cpp.cs.cs420.IsolationGame.View;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 import cpp.cs.cs420.IsolationGame.Controller.BoardController;
+import cpp.cs.cs420.IsolationGame.Controller.MiniMaxAlgorithm;
 import cpp.cs.cs420.IsolationGame.model.Board;
+import cpp.cs.cs420.IsolationGame.model.MiniMaxNode;
 import cpp.cs.cs420.IsolationGame.model.StaticVals;
 
 
 public class UserUI {
     Scanner sc = new Scanner(System.in);
+    private MiniMaxAlgorithm mini;
     
     public void startGame(){
     	welcomeMessage();
 
 		boolean userTurn = enterFirstPlayer();
-		Board root = new Board(userTurn);
+		Board currentBoard = new Board(userTurn);
+		mini = new MiniMaxAlgorithm(currentBoard);
+		
+		printBoard(currentBoard);
 
-		printBoard(root);
-
-		while (true){	//change to win condition
-			int[] newMove = enterPlayerMove(root);
-			Board newBoard = BoardController.movePlayer(root, newMove[0], newMove[1]);
-			System.out.println("value" + newBoard.getValue(newMove[0], newMove[1]));
+		while (true){	//change to win condition, heuristic of board 0 for either player?
+			//player move
+			int[] newMove = enterPlayerMove(currentBoard);
+			Board newBoard = BoardController.movePiece(currentBoard, newMove[0], newMove[1], userTurn);
+//			System.out.println("value" + newBoard.getValue(newMove[0], newMove[1]));
 			
 			System.out.println();
 			printBoard(newBoard);
+			//printMoves(newBoard);
 
-			root = newBoard;
+			currentBoard = new Board(newBoard, !userTurn);
 
     		//computer move
+				//computerTurn(currentBoard, depth);	//generate children nodes at a currentBoard
+			//search for optimal state
+			MiniMaxNode root = new MiniMaxNode(currentBoard, true);
+			MiniMaxNode test = mini.createChild(root);
+			printBoard(test.getBoard());
+			//printMoves(newBoard);
+
+			currentBoard = new Board(test.getBoard(), userTurn);
     	}
-    	
+    }
+    //computer has root minimaxnode
+    public Board computerTurn(Board board, int depth){
+		mini.generateChildren(depth);
+		
+		return null;
     }
 
     public void welcomeMessage(){
@@ -62,14 +82,15 @@ public class UserUI {
 				int y = Integer.parseInt(playerMove.substring(1))-1;
 				newMove[0] =x;
 				newMove[1] =y;
-
+				System.out.println("move is :" + newMove[0] + ", " +newMove[1]);
+				
 				if (isValidPlayerMove(root, x, y)){
 					askForMove = false;
 				}
 
 
 			} catch (Exception e) {
-				System.out.println("error");
+				e.printStackTrace();
 			}
 		}
 
@@ -77,9 +98,9 @@ public class UserUI {
 	}
 
     
-    // Player enters a coordinate system input to move their piece
+    // Player enters an input in letter,number format to move their piece
     public boolean isValidPlayerMove(Board currentBoard, int x, int y){
-
+    	System.out.println("current pos" + currentBoard.getPlayerX() + ", " + currentBoard.getPlayerY());
 		//if move goes off of the board
 		if (x < 0 || x > 7 || y < 0 || y > 7){
 			return false;
@@ -96,6 +117,7 @@ public class UserUI {
 
 		//if has a blocker in between the old move and new move
 		if (BoardController.isValidMove(currentBoard, x,y, currentBoard.getPlayerX(), currentBoard.getPlayerY())){
+			System.out.println("player pos : " + currentBoard.getPlayerX() + "," + currentBoard.getPlayerY());
 //			BoardController.movePlayer(currentBoard, x, y);
 			return true;
 		}
@@ -129,19 +151,25 @@ public class UserUI {
     		sb.append((i+1) + ".\t");	//print turn count
     		
     		if (board.getComputerMoves().size() >= i && board.getComputerMoves().size() > 0){	//check for empty slot, prevent null pointer
-    			sb.append(StaticVals.ALPHABET.charAt(i));
-    			sb.append(board.getComputerMoves().get(i)[1] + "\t ");
+    			for (int j = 0; j < board.getComputerMoves().size(); ++j){
+    				System.out.println("testComp" + Arrays.toString(board.getComputerMoves().get(j)));
+    			}
+    			sb.append(StaticVals.ALPHABET.charAt(board.getComputerMoves().get(i)[0]));
+    			sb.append(board.getComputerMoves().get(i)[1]+1 + "\t ");
     		} else {
     			sb.append("\t");
     		}
     		if (board.getUserMoves().size() >= i  && board.getUserMoves().size() > 0){
-    			sb.append(StaticVals.ALPHABET.charAt(i));
-    			sb.append(board.getUserMoves().get(i)[1] + "\t ");
+    			for (int j = 0; j < board.getUserMoves().size(); ++j){
+    				System.out.println("testUser" + Arrays.toString(board.getUserMoves().get(j)));
+    			}
+    			sb.append(StaticVals.ALPHABET.charAt(board.getUserMoves().get(i)[0]));
+    			sb.append(board.getUserMoves().get(i)[1]+1 + "\t ");
     		} else {
     			sb.append("\t");
     		}
     	}
-    	System.out.println(sb.toString());
+    	System.out.println(sb.toString() + "\n");
     }
 
 }
