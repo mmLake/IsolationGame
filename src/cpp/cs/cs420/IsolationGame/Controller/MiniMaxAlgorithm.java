@@ -166,13 +166,13 @@ public class MiniMaxAlgorithm {
 			randomIncrement = random.nextInt(smallerVal+1);
 			return new int[]{x-randomIncrement, y+randomIncrement};
 		case 2:
-			return new int[]{x, random.nextInt(7-y)+y};
+			return new int[]{x, random.nextInt(8-y)+y};
 		case 3:
 			smallerVal = (7-y < 7-x)? 7-y: 7-x;
 			randomIncrement = random.nextInt(smallerVal+1);
 			return new int[]{x+randomIncrement, y+randomIncrement};
 		case 4:
-			return new int[]{random.nextInt(7-x)+x, y};
+			return new int[]{random.nextInt(8-x)+x, y};
 		case 5:
 			//smallerVal = (7-y < x)? 7-y: x;
 			smallerVal = (7-x < y) ? 7-x : y;
