@@ -23,7 +23,7 @@ public class BoardController {
 					return false;
 			}
 		} else if(verticalDiff < 0 && horizDiff == 0){	//bot to top
-			for (int i = newX+1; i < previousX; ++i){
+			for (int i = newX; i < previousX; ++i){
 				if (board.getBoard()[i][previousY] == '#' || board.getBoard()[i][previousY] == 'O' || board.getBoard()[i][previousY] == 'X')
 					return false;
 			}
@@ -43,23 +43,22 @@ public class BoardController {
 					return false;
 			}
 		} else if (slope == -1 && previousY > newY){	//topright to botleft
-			for (int i = newY, counter = 1; i < previousY; ++i, ++counter){
-				if (board.getBoard()[previousX+counter][i] == '#' || board.getBoard()[previousX+counter][i] == 'O' || board.getBoard()[previousX+counter][i] == 'X'){
+			for (int i = newY, counter = 0; i < previousY; ++i, ++counter){
+				if (board.getBoard()[newX-counter][i] == '#' || board.getBoard()[newX-counter][i] == 'O' || board.getBoard()[newX-counter][i] == 'X'){
 					//System.out.println("checking");
 					return false;
 				}
 			}
 		} else if (slope == 1 && previousY < newY){ //topleft to botright
-			System.out.println("asd");
 			for (int i = previousY+1, counter = 1; i <= newY; ++i, ++counter){
 				if (board.getBoard()[previousX+counter][i] == '#' || board.getBoard()[previousX+counter][i] == 'O' || board.getBoard()[previousX+counter][i] == 'X')
 					return false;
 			}
 		} else if (slope == 1.0 && newY < previousY){ //botright to topleft
 			//		System.out.println("prevcheck" + board.getBoard()[previousX-1][0]);
-			for (int i = newY, counter = 1; i < previousY; ++i, ++counter){
-				if (board.getBoard()[previousX-counter][i] == '#' || board.getBoard()[previousX-counter][i] == 'O' || board.getBoard()[previousX-counter][i] == 'X'){
-					System.out.println(board.getBoard()[previousX-counter][i] + "checking: " + (previousX-counter) + ", " + i );
+			for (int i = newY, counter = 0; i < previousY; ++i, ++counter){
+				if (board.getBoard()[newX+counter][i] == '#' || board.getBoard()[newX+counter][i] == 'O' || board.getBoard()[newX+counter][i] == 'X'){
+					System.out.println(board.getBoard()[newX+counter][i] + "checking: " + (newX+counter) + ", " + i );
 					return false;
 				}
 			}

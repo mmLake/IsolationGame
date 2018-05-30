@@ -14,6 +14,7 @@ public class MiniMaxAlgorithm {
 	private HashMap<Integer, ArrayList<MiniMaxNode>> tree = new HashMap<>();
 	private MiniMaxNode root;
 	private int currentDepth;
+	Random random = new Random();
 
 	public MiniMaxAlgorithm(Board root){
 		//create root
@@ -154,7 +155,7 @@ public class MiniMaxAlgorithm {
 	//Returns an array of size 2 of coordinates of the next random move in a given direction 
 	//that has a guarantee of at least 1 valid move in that direction.
 	private int[] getValidMove(int randDirection, int x, int y){
-		Random random = new Random();
+		
 		int smallerVal, randomIncrement;
 
 		switch (randDirection){
