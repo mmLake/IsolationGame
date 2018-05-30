@@ -4,6 +4,7 @@ import cpp.cs.cs420.IsolationGame.model.Board;
 import cpp.cs.cs420.IsolationGame.model.MiniMaxNode;
 import cpp.cs.cs420.IsolationGame.model.StaticVals;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -15,6 +16,8 @@ public class MiniMaxAlgorithm {
 	private MiniMaxNode root;
 	private int currentDepth;
 	Random random = new Random();
+	static int MAX = 1000;
+	static int MIN = -1000;
 
 	public MiniMaxAlgorithm(Board root){
 		//create root
@@ -28,24 +31,23 @@ public class MiniMaxAlgorithm {
 	////generate as many children nodes as possible? or just a certain number of depth, keep in mind exponential growth, log func?
 
 	//generates children for all parents at a given depth, (leaves) in bfs fashion
-	public void generateChildren(int depth){	//can add variable depth increments
-		ArrayList<MiniMaxNode> parents = tree.get(depth);
-		for (int j = 0; j < parents.size(); ++j){
-			//generate 5 depth, temp testing
-			int depthTracker = depth;
-			while (depth - depthTracker <= 5){
-				
-				for (int i = 0; i < 5; i++){	//5 children for a parent
-					if (tree.containsKey(depth)){
-						tree.get(depth).add(createChild(parents.get(i)));
-					} else{
-						tree.put(depth, new ArrayList<MiniMaxNode>(Arrays.asList(createChild(parents.get(i)))));
-					}
-				}
-				++depth;
+	public MiniMaxNode[] createTree(){	//can add variable depth increments
+		ArrayList<MiniMaxNode> tree = new ArrayList<MiniMaxNode>();
+		tree.add(root);
+		
+		MiniMaxNode parent;
+		MiniMaxNode child;
+		
+		for (int depth = 0; depth < 5; ++depth){
+			parent = tree.get(5*depth);
+			for (int numChild = 0; numChild < 5; numChild++){	//5 children for a parent
+			
+				child = createChild(parent);
+				tree.add(child);
 			}
+				
 		}
-		//run minimax with alpha beta pruning
+		return tree.toArray(new MiniMaxNode[tree.size()]);
 	}
 
 	//dfs with iterative deepening, use stack to store nodes to traverse?
@@ -64,6 +66,52 @@ public class MiniMaxAlgorithm {
 		}
 		return null;
 	}
+	// Initial values of 
+	// Aplha and Beta
+
+	 
+	// Returns optimal value for
+	// current player (Initially called
+	// for root and maximizer)
+/*	static MiniMaxNode minimax(int depth, int nodeIndex, boolean maximizingPlayer, MiniMaxNode tree[], int alpha, int beta){
+	    // Terminating condition. i.e 
+	    // leaf node is reached
+	    if (depth == 5)
+	        return tree[nodeIndex];
+	    if (maximizingPlayer)
+	    {
+	        int best = MIN;
+	 
+	        // Recur for left and right children
+	        for (int i = 0; i < 5; i++)
+	        {
+	            int val = minimax(depth + 1, Math.pow(5, nodeIndex) + i, false, tree, alpha, beta);
+	            best = Math.max(best, val);
+	            alpha = Math.max(alpha, best);
+	 
+	            // Alpha Beta Pruning
+	            if (beta <= alpha)
+	                break;
+	        }
+	        return tree[nodeIndex];
+	    }
+	    else
+	    {
+	        int best = MAX;
+	        // Recur for left and right children
+	        for (int i = 0; i < 5; i++)
+	        {
+	            int val = minimax(depth + 1, Math.pow(5, nodeIndex) + i, true, tree, alpha, beta);
+	            best = Math.min(best, val);
+	            beta = Math.min(beta, best);
+	 
+	            // Alpha Beta Pruning
+	            if (beta <= alpha)
+	                break;
+	        }
+	        return best;
+	    }
+	}*/
 
 	/*
     0- top
@@ -213,5 +261,6 @@ public class MiniMaxAlgorithm {
 
 		return false;
 	}
+	
 
 }

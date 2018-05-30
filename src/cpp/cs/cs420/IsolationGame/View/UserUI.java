@@ -27,7 +27,6 @@ public class UserUI {
 			//player move
 			int[] newMove = enterPlayerMove(currentBoard);
 			Board newBoard = BoardController.movePiece(currentBoard, newMove[0], newMove[1], userTurn);
-//			System.out.println("value" + newBoard.getValue(newMove[0], newMove[1]));
 			
 			System.out.println();
 			printBoard(newBoard);
@@ -36,21 +35,22 @@ public class UserUI {
 			currentBoard = new Board(newBoard, !userTurn);
 
     		//computer move
-				//computerTurn(currentBoard, depth);	//generate children nodes at a currentBoard
+			
 			//search for optimal state
-			MiniMaxNode root = new MiniMaxNode(currentBoard, true);
-			MiniMaxNode test = mini.createChild(root);
-			printBoard(test.getBoard());
+			currentBoard = computerTurn(currentBoard, 10);
+
 			//printMoves(newBoard);
 
-			currentBoard = new Board(test.getBoard(), userTurn);
+	//		currentBoard = new Board(test.getBoard(), userTurn);
     	}
     }
-    //computer has root minimaxnode
+    //computer has root minimaxnode, passes in current state (board), and how many levels (depth) to generate
     public Board computerTurn(Board board, int depth){
-		mini.generateChildren(depth);
+		MiniMaxNode root = new MiniMaxNode(board, true);	
+		MiniMaxNode test = mini.createChild(root);
+		printBoard(test.getBoard());
 		
-		return null;
+		return test.getBoard();
     }
 
     public void welcomeMessage(){

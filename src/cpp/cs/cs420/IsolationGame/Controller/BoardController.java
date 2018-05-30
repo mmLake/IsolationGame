@@ -16,7 +16,7 @@ public class BoardController {
 		//run
 		double horizDiff = (double)newY - (double)previousY;
 		double slope = (verticalDiff)/(horizDiff);
-		//	System.out.println("vert:" + verticalDiff + ", horiz:" + horizDiff + ", slope:" + slope);
+
 		if (verticalDiff > 0 && horizDiff == 0){//top to bottom
 			for (int i = previousX+1; i <= newX; ++i){
 				if (board.getBoard()[i][previousY] == '#' || board.getBoard()[i][previousY] == 'O' || board.getBoard()[i][previousY] == 'X')
@@ -45,7 +45,6 @@ public class BoardController {
 		} else if (slope == -1 && previousY > newY){	//topright to botleft
 			for (int i = newY, counter = 0; i < previousY; ++i, ++counter){
 				if (board.getBoard()[newX-counter][i] == '#' || board.getBoard()[newX-counter][i] == 'O' || board.getBoard()[newX-counter][i] == 'X'){
-					//System.out.println("checking");
 					return false;
 				}
 			}
@@ -55,10 +54,8 @@ public class BoardController {
 					return false;
 			}
 		} else if (slope == 1.0 && newY < previousY){ //botright to topleft
-			//		System.out.println("prevcheck" + board.getBoard()[previousX-1][0]);
 			for (int i = newY, counter = 0; i < previousY; ++i, ++counter){
 				if (board.getBoard()[newX+counter][i] == '#' || board.getBoard()[newX+counter][i] == 'O' || board.getBoard()[newX+counter][i] == 'X'){
-					System.out.println(board.getBoard()[newX+counter][i] + "checking: " + (newX+counter) + ", " + i );
 					return false;
 				}
 			}
@@ -95,6 +92,7 @@ public class BoardController {
 			int computerX = currentBoard.getComputerX();
 			int computerY = currentBoard.getComputerY();
 			System.out.println("comp position" + computerX + ", " + computerY);
+			
 			//update current Computer position
 			nextBoard.setComputerX(row);
 			nextBoard.setComputerY(col);
