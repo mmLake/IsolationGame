@@ -12,14 +12,12 @@ import cpp.cs.cs420.IsolationGame.model.StaticVals;
 
 public class UserUI {
     Scanner sc = new Scanner(System.in);
-    private MiniMaxAlgorithm mini;
     
     public void startGame(){
     	welcomeMessage();
 
 		boolean userTurn = enterFirstPlayer();
 		Board currentBoard = new Board(userTurn);
-		mini = new MiniMaxAlgorithm(currentBoard);
 		
 		printBoard(currentBoard);
 
@@ -36,21 +34,38 @@ public class UserUI {
 
     		//computer move
 			
-			//search for optimal state
-			currentBoard = computerTurn(currentBoard, 10);
-
+			currentBoard = computerTurn(currentBoard);
+			printBoard(currentBoard);
 			//printMoves(newBoard);
 
 	//		currentBoard = new Board(test.getBoard(), userTurn);
     	}
     }
     //computer has root minimaxnode, passes in current state (board), and how many levels (depth) to generate
-    public Board computerTurn(Board board, int depth){
-		MiniMaxNode root = new MiniMaxNode(board, true);	
-		MiniMaxNode test = mini.createChild(root);
-		printBoard(test.getBoard());
+    public Board computerTurn(Board board){//, int depth){
+    	MiniMaxAlgorithm mini = new MiniMaxAlgorithm(board);
+    	int[] moves = mini.minimax(5);
+    	return BoardController.movePiece(board, moves[0], moves[1], false);
+    		//Instantiate root of child states
+	//	MiniMaxNode root = new MiniMaxNode(board, true);	
+    	
+			//should return a bunch of child states in tree form
 		
-		return test.getBoard();
+
+			//returns a single child state of the root
+//		MiniMaxNode test = mini.createChild(root);	//replace with bunch of states
+		
+//		printBoard(test.getBoard());
+		
+			//get optimal move for user
+		//int[] playerMove = mini.getOptimalMove(board, true);
+		//BoardController.movePiece(board, playerMove[0], playerMove[1], true);
+	//	printBoard(board);
+		
+			//then call getOptimalMove for user on the child boards
+		
+//		return test.getBoard();
+		
     }
 
     public void welcomeMessage(){
@@ -99,8 +114,8 @@ public class UserUI {
 
     
     // Player enters an input in letter,number format to move their piece
-    public boolean isValidPlayerMove(Board currentBoard, int x, int y){
-    	System.out.println("current pos" + currentBoard.getPlayerX() + ", " + currentBoard.getPlayerY());
+    public static boolean isValidPlayerMove(Board currentBoard, int x, int y){
+//    	System.out.println("current pos" + currentBoard.getPlayerX() + ", " + currentBoard.getPlayerY());
 		//if move goes off of the board
 		if (x < 0 || x > 7 || y < 0 || y > 7){
 			return false;
@@ -117,7 +132,7 @@ public class UserUI {
 
 		//if has a blocker in between the old move and new move
 		if (BoardController.isValidMove(currentBoard, x,y, currentBoard.getPlayerX(), currentBoard.getPlayerY())){
-			System.out.println("player pos : " + currentBoard.getPlayerX() + "," + currentBoard.getPlayerY());
+//			System.out.println("player pos : " + currentBoard.getPlayerX() + "," + currentBoard.getPlayerY());
 //			BoardController.movePlayer(currentBoard, x, y);
 			return true;
 		}
@@ -125,7 +140,7 @@ public class UserUI {
 		return false;
     }
     // print board using the board object
-    public void printBoard(Board board){
+    public static void printBoard(Board board){
     	StringBuilder sb = new StringBuilder(StaticVals.BOARD_COLUMNS); 
 
     	for (int i = 0; i < StaticVals.BOARD_SIZE; ++i){

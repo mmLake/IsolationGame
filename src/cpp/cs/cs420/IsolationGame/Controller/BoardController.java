@@ -60,7 +60,7 @@ public class BoardController {
 				}
 			}
 		} else {
-			System.out.println("Unspecified slope/coordinate combination");
+		//	System.out.println("Unspecified slope/coordinate combination");
 		}
 		return true;
 	}
@@ -68,40 +68,41 @@ public class BoardController {
 	/*
     move validity checked during io- this method simply moves player and returns updated board
 	 */
-	public static Board movePiece(Board currentBoard, int row, int col, boolean userTurn){
+	public static Board movePiece(Board currentBoard, int curX, int curY, boolean userTurn){
 		Board nextBoard = new Board(currentBoard, userTurn);
 
 		if (userTurn){
-			System.out.println("player turn");
+//			System.out.println("player turn");
 			//get current player position
 			int playerX = currentBoard.getPlayerX();
 			int playerY = currentBoard.getPlayerY();
 
 			//update current Player position
-			nextBoard.setPlayerX(row);
-			nextBoard.setPlayerY(col);
+			nextBoard.setPlayerX(curX);
+			nextBoard.setPlayerY(curY);
 
 			nextBoard.getUserMoves().add(new int[]{playerX, playerY});
 
-			nextBoard.setBoardPosition(row, col, 'O');
+			nextBoard.setBoardPosition(curX, curY, 'O');
 			nextBoard.setBoardPosition(playerX, playerY, '#');
 		}
 		else {
-			System.out.println("comp turn");
+//			System.out.println("comp turn");
 			//get current computer position
 			int computerX = currentBoard.getComputerX();
 			int computerY = currentBoard.getComputerY();
-			System.out.println("comp position" + computerX + ", " + computerY);
+//			System.out.println("comp position" + computerX + ", " + computerY);
 			
 			//update current Computer position
-			nextBoard.setComputerX(row);
-			nextBoard.setComputerY(col);
+			nextBoard.setComputerX(curX);
+			nextBoard.setComputerY(curY);
 
-			nextBoard.getComputerMoves().add(new int[]{row, computerY});
+			nextBoard.getComputerMoves().add(new int[]{curX, computerY});
 
-			nextBoard.setBoardPosition(row, col, 'X');
+			nextBoard.setBoardPosition(curX, curY, 'X');
 			nextBoard.setBoardPosition(computerX, computerY, '#');
 		}
 		return nextBoard;
 	}
+	// same as move piece, but does not 
 }

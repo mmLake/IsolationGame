@@ -13,6 +13,11 @@ public class Board {
 
     private ArrayList<int[]> userMoves = new ArrayList<int[]>();
     private ArrayList<int[]> computerMoves = new ArrayList<int[]>();
+    
+    public Board(){
+    	board = new Character[StaticVals.BOARD_SIZE][StaticVals.BOARD_SIZE];
+    	userTurn = false;
+    }
 
     public Board(Board prevBoard, boolean userTurn){
         this.board = prevBoard.board;
@@ -59,10 +64,18 @@ public class Board {
         board[StaticVals.BOARD_SIZE-1][StaticVals.BOARD_SIZE-1] = secondPlayer;
         this.userTurn = userTurn;
     }
+    
+    //returns a copy of the board as a separate object
+    public Board boardCopy(){
+    	Board newBoard = new Board();
+    	newBoard.setBoard(board);
+    	return newBoard;
+    }
 
     
     //if minimizer has upper hand, then negative value
-    // returns # of available moves in the current board
+    // returns # of available moves in the current board for a specified spot, to be represented as either
+    // the player or computer position.
     public int getValue(int posX, int posY){
 //    	System.out.println(posX + ", " + posY + ", " + board[posX][posY]); 
     	int availableMoves = 0;
@@ -125,6 +138,13 @@ public class Board {
 
     public Character[][] getBoard(){
         return board;
+    }
+    public void setBoard(Character[][] board){
+    	for (int i = 0; i < this.board.length; ++i){
+    		for (int j = 0; j < this.board.length; ++j){
+    			this.board[i][j] = board[i][j];
+    		}
+    	}
     }
     public void setBoardPosition(int x, int y, char z){
         board[x][y] = z;
