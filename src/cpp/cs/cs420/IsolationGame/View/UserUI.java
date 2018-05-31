@@ -21,7 +21,8 @@ public class UserUI {
 		
 		printBoard(currentBoard);
 
-		while (true){	//change to win condition, heuristic of board 0 for either player?
+		while (currentBoard.getValue(currentBoard.getPlayerX(), currentBoard.getPlayerY()) != 0 && 
+				currentBoard.getValue(currentBoard.getComputerX(), currentBoard.getComputerY()) != 0){	//change to win condition, heuristic of board 0 for either player?
 			//player move
 			int[] newMove = enterPlayerMove(currentBoard);
 			Board newBoard = BoardController.movePiece(currentBoard, newMove[0], newMove[1], userTurn);
@@ -39,6 +40,13 @@ public class UserUI {
 			//printMoves(newBoard);
 
 	//		currentBoard = new Board(test.getBoard(), userTurn);
+			if (currentBoard.getValue(currentBoard.getPlayerX(), currentBoard.getPlayerY()) != 0){
+				System.out.println("You lose!");
+				System.exit(0);
+			} else if (currentBoard.getValue(currentBoard.getComputerX(), currentBoard.getComputerY()) != 0){
+				System.out.println("You win!");
+				System.exit(0);
+			}
     	}
     }
     //computer has root minimaxnode, passes in current state (board), and how many levels (depth) to generate
