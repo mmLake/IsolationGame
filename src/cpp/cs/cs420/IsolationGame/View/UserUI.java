@@ -40,10 +40,10 @@ public class UserUI {
 			//printMoves(newBoard);
 
 	//		currentBoard = new Board(test.getBoard(), userTurn);
-			if (currentBoard.getValue(currentBoard.getPlayerX(), currentBoard.getPlayerY()) != 0){
+			if (currentBoard.getValue(currentBoard.getPlayerX(), currentBoard.getPlayerY()) == 0){
 				System.out.println("You lose!");
 				System.exit(0);
-			} else if (currentBoard.getValue(currentBoard.getComputerX(), currentBoard.getComputerY()) != 0){
+			} else if (currentBoard.getValue(currentBoard.getComputerX(), currentBoard.getComputerY()) == 0){
 				System.out.println("You win!");
 				System.exit(0);
 			}
